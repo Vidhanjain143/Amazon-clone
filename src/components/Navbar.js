@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStateValue } from '../StateProvider';
+import { UserContext } from '../UserContext';
 const Navbar = () => {
+    const {user}=useContext(UserContext);
     const [{basket}] = useStateValue();
     const navigate = useNavigate();
   return (

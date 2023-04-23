@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { auth,provider } from '../firebase';
+import { FaGoogle } from 'react-icons/fa';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
 const Login = () => {
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
   const navigate=useNavigate();
+  const handleClick=()=>{
+    signInWithPopup(auth,provider).then((data)=>{
+     alert(data.user.email);
+    })
+  }
+  const handleLogin=()=>{
+    signInWithEmailAndPassword(auth,email,password).then((data)=>{
+      setEmail("");
+      setPassword("");
+      navigate('/');
+    })
+  }
   return (
     <Container>
       <Logo>
@@ -13,15 +30,19 @@ const Login = () => {
           <h3>Sign In</h3>
           <InputContainer>
           <p>Email</p>
-          <input type="email" placeholder='example@example.com' />
+          <input type="email" placeholder='example@example.com' onChange={(e)=>setEmail(e.target.value)} value={email}/>
           </InputContainer>
           <InputContainer>
           <p>Password</p>
-          <input type="password" placeholder='*********'/>
+          <input type="password" placeholder='*********' onChange={(e)=>setPassword(e.target.value)} value={password}/>
           </InputContainer>
-          <LoginButton>Login</LoginButton>
+          <LoginButton onClick={handleLogin}>Login</LoginButton>
           <InfoText>By contiuing, you agree to Amazon's <span> Conditions of Use </span> and <span> Privacy Notice </span>.</InfoText>
       </FormContainer>
+      <GoogleButton onClick={handleClick}>
+      <GoogleIcon />
+      Sign in with Google
+    </GoogleButton>
      <SignupButton onClick={()=>{navigate('/signup')}}>
       Create Account in Amazon 
      </SignupButton>
@@ -124,6 +145,27 @@ const SignupButton=styled.button`
   border: 1px solid gray;
 
  }
+`;
+const GoogleButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4285f4;
+  color: #ffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 15px;
+  cursor: pointer;
+  width: 55%;
+  height: 40px;
+  margin-top: 10px;
+`;
+
+const GoogleIcon = styled(FaGoogle)`
+  font-size: 20px;
+  margin-right: 10px;
 `;
 
 export default Login
