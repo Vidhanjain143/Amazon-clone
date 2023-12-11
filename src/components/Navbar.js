@@ -3,10 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStateValue } from '../StateProvider';
 import { UserContext } from '../UserContext';
+import { auth } from '../firebase';
 const Navbar = () => {
     const {user}=useContext(UserContext);
     const [{basket}] = useStateValue();
     const navigate = useNavigate();
+    const handleSignOut=()=>{
+        auth.signOut().then(()=>{
+          
+            navigate('/')
+        }).catch((err)=>{
+            alert(err.message);
+        })
+    }
   return (
     <Container>
      <Inner>
@@ -22,7 +31,7 @@ const Navbar = () => {
         <RightContainer>
             <NavButton onClick={()=>{navigate('/login')}}>
                 <p>Hello,</p>
-                <p>Guest</p>
+                <p>{user ? user.email : 'Guest'}</p>
             </NavButton>
             <NavButton>
                 <p>Return</p>
@@ -32,6 +41,9 @@ const Navbar = () => {
             <img src="./basket-icon.png" alt="" />
             <p>{basket.length}</p>
             </BasketButton>
+            <LogoutButton onClick={handleSignOut}>
+                Out
+            </LogoutButton>
         </RightContainer>
      </Inner>
     <MobileSearch>
@@ -178,4 +190,12 @@ const MobileSearch=styled.div`
 }
 `;
 
+const LogoutButton=styled.button`
+ border-radius: 3px;
+ outline: none;
+ border: none;
+ margin-left: 2px;
+ height: 20px;
+ background-color: #febd69;
+`;
 export default Navbar

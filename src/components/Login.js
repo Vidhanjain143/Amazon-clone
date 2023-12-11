@@ -11,7 +11,7 @@ const Login = () => {
   const navigate=useNavigate();
   const handleClick=()=>{
     signInWithPopup(auth,provider).then((data)=>{
-     alert(data.user.email);
+      navigate('/');
     })
   }
   const handleLogin=()=>{

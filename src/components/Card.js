@@ -1,4 +1,4 @@
-import { Rating } from '@material-ui/lab';
+import { Rating } from '@mui/lab';
 import React from 'react'
 import styled from 'styled-components';
 import { useStateValue } from '../StateProvider';
